@@ -3,22 +3,26 @@ name: Python CI
 
 on:
   push:
+  pull_request:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get code
+      - name: Имя репозитория
         uses: actions/checkout@v4
 
-      - name: Install Python
+      - name: Питон
         uses: actions/setup-python@v5
         with:
           python-version: '3.14'
 
-      - name: Build application
+      - name: Установка пайтест
+        run: python -m pip install pytest
+
+      - name: проверка синтаксиса
         run: python -m py_compile umnichka.py
 
-      - name: Run application
-        run: python umnichka.py
+      - name: Запуск тестов
+        run: python -m pytest test_student.py -v
